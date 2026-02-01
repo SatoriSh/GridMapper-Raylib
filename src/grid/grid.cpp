@@ -4,6 +4,9 @@
 Grid::Grid() : gridWidth(30), gridHeight(30), cellSize(16)
 {
     initWindow();
+    initCells();
+
+    userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
 }
 
 void Grid::process()
@@ -16,8 +19,8 @@ void Grid::process()
         userCamera.process();
 
         Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), userCamera.camera);
-        int mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
-        int mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
+        mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
+        mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
 
         BeginMode2D(userCamera.camera);
         render();
@@ -30,12 +33,12 @@ void Grid::process()
 
 void Grid::render()
 {
-    for (int y = 0; y < gridHeight; y++)
+    for (int y = 0; y < cells[0].size(); y++)
     {
-        for (int x = 0; x < gridWidth; x++)
+        for (int x = 0; x < cells.size(); x++)
         {
-            DrawRectangleLines(x * cellSize, y * cellSize, cellSize, cellSize, cellLinesColor);
-            DrawText("0", x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 10, GREEN);
+            cells[x][y].updateHover(mouseGridX, mouseGridY);
+            cells[x][y].render();
         }
     }
 }
@@ -46,7 +49,50 @@ void Grid::initWindow()
     SetTargetFPS(FPS);
 }
 
+void Grid::initCells()
+{
+    for (int y = 0; y < gridHeight; y++)
+    {
+        cells.emplace_back();
+        for (int x = 0; x < gridWidth; x++)
+        {
+            cells.back().emplace_back(x, y, cellSize);
+        }
+    }
+}
+
 Grid::~Grid()
 {
     CloseWindow();
+}
+
+void Grid::Cell::render() const
+{
+    DrawRectangleLinesEx(rect, lineThick, cellLinesColor);
+    DrawText(TextFormat("%d", layerNum), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 10, layerNumColor);
+}
+
+void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
+{
+    if (x == mouseGridX && y == mouseGridY)
+    {
+        lineThick = hoverLineThick;
+        isHovered = true;
+    }
+    else
+    {
+        lineThick = defaultLineThick;
+        isHovered = false;
+    }
+}
+
+Grid::Cell::Cell(int x, int y, int cellSize)
+    : x(x), y(y), cellSize(cellSize)
+{
+    rect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+}
+
+Grid::Cell::~Cell()
+{
+
 }

@@ -9,7 +9,7 @@ void UserCamera::cameraInit()
 {
     camera = {0};
     camera.target = {0.0f, 0.0f}; 
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f}; 
+    camera.offset = {0.0f, 0.0f};
     camera.zoom = 1.0f;                               
     camera.rotation = 0.0f;                          
 
@@ -39,7 +39,8 @@ void UserCamera::cameraInputHandler()
     if (IsKeyDown(KEY_S))
         delta.y += 1.0f;
 
-    move(delta);
+    if (delta != Vector2{0,0})
+        move(delta);
 }
 
 void UserCamera::setCameraTarget(Vector2 target)
@@ -60,6 +61,7 @@ void UserCamera::move(Vector2 delta)
 
 void UserCamera::process()
 {
+    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     cameraInputHandler();
 }
 
