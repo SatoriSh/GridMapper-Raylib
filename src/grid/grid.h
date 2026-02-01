@@ -1,5 +1,6 @@
 #pragma once
 #include "raylib.h"
+#include "../camera/UserCamera.h"
 
 class Grid
 {
@@ -18,9 +19,7 @@ class Grid
     int gridWidth;
     int gridHeight;
     int cellSize;
+    UserCamera userCamera;
     void render();
     void initWindow();
-
-
-    Camera2D camera;
 };

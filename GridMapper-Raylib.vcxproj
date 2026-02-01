@@ -126,11 +126,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="grid\grid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\camera\UserCamera.cpp" />
+    <ClCompile Include="src\grid\grid.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="grid\grid.h" />
+    <ClInclude Include="src\camera\UserCamera.h" />
+    <ClInclude Include="src\grid\grid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

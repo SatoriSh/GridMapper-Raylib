@@ -4,12 +4,6 @@
 Grid::Grid() : gridWidth(30), gridHeight(30), cellSize(16)
 {
     initWindow();
-
-    camera = {0};
-    camera.target = {0.0f, 0.0f};
-    camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f}; 
-    camera.zoom = 1.0f;                                
-    camera.rotation = 0.0f;
 }
 
 void Grid::process()
@@ -19,11 +13,13 @@ void Grid::process()
         BeginDrawing();
         ClearBackground(backgroundColor);
 
-        Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), camera);
+        userCamera.process();
+
+        Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), userCamera.camera);
         int mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
         int mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
 
-        BeginMode2D(camera);
+        BeginMode2D(userCamera.camera);
         render();
         EndMode2D();
 

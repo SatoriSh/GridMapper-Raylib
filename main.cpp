@@ -1,6 +1,6 @@
 #include "raylib.h"
 #include "stdio.h"
-#include "grid/grid.h"
+#include "src/grid/grid.h"
 
 int main()
 {
