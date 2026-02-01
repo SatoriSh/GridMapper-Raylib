@@ -22,6 +22,9 @@ void Grid::process()
         mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
         mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
 
+        if (IsKeyPressed(KEY_R))
+            resetCells();
+
         BeginMode2D(userCamera.camera);
         render();
         EndMode2D();
@@ -62,6 +65,17 @@ void Grid::initCells()
     }
 }
 
+void Grid::resetCells()
+{
+    for (int y = 0; y < gridHeight; y++)
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            cells[x][y].layer = 0;
+        }
+    }
+}
+
 Grid::~Grid()
 {
     CloseWindow();
@@ -71,13 +85,24 @@ Grid::Cell::Cell(int x, int y, int cellSize, int minLayer, int maxLayer)
     : x(x), y(y), cellSize(cellSize), minLayer(minLayer), maxLayer(maxLayer)
 {
     rect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+
+    layerColor[0] = {34, 51, 82, 255};
+    layerColor[1] = {33, 47, 69, 255};
+    layerColor[2] = {46, 68, 105, 255};
+    layerColor[3] = {62, 88, 121, 255};
+    layerColor[4] = {83, 113, 145, 255};
+    layerColor[5] = {60, 130, 140, 255};
+    layerColor[6] = {70, 110, 90, 255};
+    layerColor[7] = {120, 90, 80, 255};
+    layerColor[8] = {94, 84, 115, 255};
+    layerColor[9] = {20, 30, 50, 255};
 }
 
-void Grid::Cell::render() const
+void Grid::Cell::render() 
 {
-    DrawRectangle(rect.x, rect.y, rect.width, rect.height, WHITE);
-    DrawRectangleLinesEx(rect, lineThick, cellLinesColor);
-    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 13, layerNumColor);
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height, layerColor.at(layer));
+    DrawRectangleLinesEx(rect, lineThick, isHovered ? cellLinesHoverColor : cellLinesColor);
+    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 3, y * cellSize + cellSize / 5, 11, layerNumColor);
 }
 
 void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
