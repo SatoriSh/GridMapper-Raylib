@@ -39,6 +39,7 @@ void Grid::render()
         {
             cells[x][y].updateHover(mouseGridX, mouseGridY);
             cells[x][y].render();
+            cells[x][y].updateCellLayer();
         }
     }
 }
@@ -56,7 +57,7 @@ void Grid::initCells()
         cells.emplace_back();
         for (int x = 0; x < gridWidth; x++)
         {
-            cells.back().emplace_back(x, y, cellSize);
+            cells.back().emplace_back(x, y, cellSize, minLayer, maxLayer);
         }
     }
 }
@@ -66,10 +67,16 @@ Grid::~Grid()
     CloseWindow();
 }
 
+Grid::Cell::Cell(int x, int y, int cellSize, int minLayer, int maxLayer)
+    : x(x), y(y), cellSize(cellSize), minLayer(minLayer), maxLayer(maxLayer)
+{
+    rect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+}
+
 void Grid::Cell::render() const
 {
     DrawRectangleLinesEx(rect, lineThick, cellLinesColor);
-    DrawText(TextFormat("%d", layerNum), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 10, layerNumColor);
+    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 10, layerNumColor);
 }
 
 void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
@@ -86,10 +93,21 @@ void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
     }
 }
 
-Grid::Cell::Cell(int x, int y, int cellSize)
-    : x(x), y(y), cellSize(cellSize)
+void Grid::Cell::updateCellLayer()
 {
-    rect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+    if (!isHovered)
+        return;
+
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+        layer++;
+    }
+    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    {
+        layer--;
+    }
+
+    layer = Clamp(layer, minLayer, maxLayer);
 }
 
 Grid::Cell::~Cell()
