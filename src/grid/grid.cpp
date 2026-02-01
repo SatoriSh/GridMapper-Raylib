@@ -75,8 +75,9 @@ Grid::Cell::Cell(int x, int y, int cellSize, int minLayer, int maxLayer)
 
 void Grid::Cell::render() const
 {
+    DrawRectangle(rect.x, rect.y, rect.width, rect.height, WHITE);
     DrawRectangleLinesEx(rect, lineThick, cellLinesColor);
-    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 10, layerNumColor);
+    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 4, y * cellSize + cellSize / 4, 13, layerNumColor);
 }
 
 void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
@@ -95,7 +96,7 @@ void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
 
 void Grid::Cell::updateCellLayer()
 {
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT))
+    if ((IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) || !isHovered)
         layerBeenChanged = false;
 
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !layerBeenChanged && isHovered)
