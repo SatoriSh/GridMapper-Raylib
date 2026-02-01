@@ -26,7 +26,7 @@ void Grid::process()
         render();
         EndMode2D();
 
-        DrawText(TextFormat("MouseX: %d\n\nMouseY: %d", mouseGridX, mouseGridY), 15, 15, 20, WHITE);
+        DrawText(TextFormat("MouseX: %d\nMouseY: %d", mouseGridX, mouseGridY), 15, 15, 20, WHITE);
         EndDrawing();
     }
 }
@@ -95,16 +95,18 @@ void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
 
 void Grid::Cell::updateCellLayer()
 {
-    if (!isHovered)
-        return;
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT))
+        layerBeenChanged = false;
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !layerBeenChanged && isHovered)
     {
         layer++;
+        layerBeenChanged = true;
     }
-    else if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT))
+    else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && !layerBeenChanged && isHovered)
     {
         layer--;
+        layerBeenChanged = true;
     }
 
     layer = Clamp(layer, minLayer, maxLayer);

@@ -40,6 +40,7 @@ class Grid
         int layer = 0;
         int minLayer;
         int maxLayer;
+        bool layerBeenChanged = false;
         bool isHovered = false;
         Rectangle rect;
         float lineThick = defaultLineThick;
