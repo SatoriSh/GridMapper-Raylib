@@ -17,6 +17,7 @@ class Grid
     const int FPS = 60;
     const int minLayer = 0;
     const int maxLayer = 9;
+    int currentLayer = 1;
     const Color backgroundColor = {27, 38, 59, 255};
     int gridWidth;
     int gridHeight;
@@ -25,9 +26,13 @@ class Grid
     int mouseGridY;
     bool drawLayerNums = true;
     UserCamera userCamera;
+    std::map<int, Color> layerColor;
     void render();
+    void drawGrid();
+    void drawHints();
     void initWindow();
     void initCells();
+    void initLayerColors();
     void resetCells();
     void inputHandler();
 
@@ -51,10 +56,9 @@ class Grid
         const Color cellLinesColor = {65, 90, 119, 150};
         const Color cellLinesHoverColor = {255, 215, 30, 255};
         const Color layerNumColor = {224, 225, 221, 255};
-        std::map<int, Color> layerColor;
-        void render(bool drawLayerNums);
+        void render(bool drawLayerNums, Color layerColor);
         void updateHover(int mouseGridX, int mouseGridY);
-        void updateCellLayer();
+        void updateCellLayer(int currentLayer);
     };
 
     std::vector<std::vector<Cell>> cells;

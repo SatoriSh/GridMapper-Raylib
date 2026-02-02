@@ -1,9 +1,5 @@
 #include "UserCamera.h"
 
-
-
-#include <iostream>
-
 UserCamera::UserCamera()
 {
     cameraInit();
@@ -72,7 +68,6 @@ void UserCamera::process()
 {
     camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     cameraInputHandler();
-    std::cout << "cameraX" << camera.target.x << "\ncameraY" << camera.target.y;
 }
 
 UserCamera::~UserCamera()
