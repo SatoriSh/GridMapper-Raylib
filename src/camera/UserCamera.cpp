@@ -1,5 +1,9 @@
 #include "UserCamera.h"
 
+
+
+#include <iostream>
+
 UserCamera::UserCamera()
 {
     cameraInit();
@@ -30,13 +34,13 @@ void UserCamera::cameraInputHandler()
     }
 
     Vector2 delta = {0, 0};
-    if (IsKeyDown(KEY_D))
+    if (IsKeyDown(KEY_D) && camera.target.x < worldBounds.width)
         delta.x += 1.0f;
-    if (IsKeyDown(KEY_A))
+    if (IsKeyDown(KEY_A) && camera.target.x > worldBounds.x)
         delta.x -= 1.0f;
-    if (IsKeyDown(KEY_W))
+    if (IsKeyDown(KEY_W) && camera.target.y > worldBounds.y)
         delta.y -= 1.0f;
-    if (IsKeyDown(KEY_S))
+    if (IsKeyDown(KEY_S) && camera.target.y < worldBounds.height)
         delta.y += 1.0f;
 
     if (delta != Vector2{0,0})
@@ -46,6 +50,11 @@ void UserCamera::cameraInputHandler()
 void UserCamera::setCameraTarget(Vector2 target)
 {
     camera.target = target;
+}
+
+void UserCamera::setCameraWorldBounds(Rectangle worldBounds)
+{
+    this->worldBounds = worldBounds;
 }
 
 void UserCamera::move(Vector2 delta)
@@ -63,9 +72,9 @@ void UserCamera::process()
 {
     camera.offset = {(float)GetScreenWidth() / 2.0f, (float)GetScreenHeight() / 2.0f};
     cameraInputHandler();
+    std::cout << "cameraX" << camera.target.x << "\ncameraY" << camera.target.y;
 }
 
 UserCamera::~UserCamera()
 {
-
 }

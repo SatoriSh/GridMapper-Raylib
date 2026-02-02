@@ -7,6 +7,7 @@ Grid::Grid() : gridWidth(30), gridHeight(30), cellSize(16)
     initCells();
 
     userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
+    userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight()});
 }
 
 void Grid::process()

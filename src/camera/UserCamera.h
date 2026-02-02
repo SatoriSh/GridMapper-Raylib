@@ -14,6 +14,7 @@ class UserCamera
 
     void process();
     void setCameraTarget(Vector2 target);
+    void setCameraWorldBounds(Rectangle worldBounds);
     void move(Vector2 delta);
 
   private:
@@ -21,6 +22,8 @@ class UserCamera
     float maxCameraZoom;
     float minCameraZoom;
     float zoomSpeed = 10.0f;
+
+    Rectangle worldBounds;
 
     void cameraInit();
     void cameraInputHandler();
