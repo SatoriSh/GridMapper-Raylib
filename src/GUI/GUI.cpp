@@ -9,6 +9,8 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
     float totalHeight = (maxLayer + 1) * cellSize + maxLayer * (offsetY - cellSize); // (offsetY - cellSize) = 8px offsetY if cellSize = 16
     int y = (GetScreenHeight() / 2) - (totalHeight / 2);
 
+    int currentHoveredInsideLoop = -1;
+
     for (int i = maxLayer; i >= 0; i--)
     {
         if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
@@ -19,11 +21,22 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
         inputHandler(i);
 
         DrawRectangle(cellRect.x, cellRect.y, cellRect.width, cellRect.height, layerColor[i]);
+
+        if (CheckCollisionPointRec(GetMousePosition(), cellRect))
+        {
+            DrawRectangleLinesEx(cellRect, lineThick / 2, WHITE);
+            currentHoveredInsideLoop = i;
+        }
+
         if (i == currentLayer)
             DrawRectangleLinesEx(cellRect, lineThick, cellLinesCurrentLayerColor);
 
+        DrawText(TextFormat("%d", i), cellRect.x + cellSize / 2 - 4, cellRect.y + cellSize / 2 - 6, 12, {224, 225, 221, 255});
+
         y += offsetY;
     }
+
+    currentHoveredInsideLoop != -1 ? onHoverGUI(currentHoveredInsideLoop) : onMouseLeaveGUI();
 }
 
 void GUI::inputHandler(int layer) const

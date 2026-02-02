@@ -26,6 +26,7 @@ class Grid
     int mouseGridX;
     int mouseGridY;
     bool drawLayerNums = true;
+    int hoveredGUILayer = -1;
     UserCamera userCamera;
     GUI gui;
     std::map<int, Color> layerColor;
@@ -60,7 +61,7 @@ class Grid
         const Color cellLinesColor = {65, 90, 119, 150};
         const Color cellLinesHoverColor = {255, 215, 30, 255};
         const Color layerNumColor = {224, 225, 221, 255};
-        void render(bool drawLayerNums, Color layerColor);
+        void render(bool drawLayerNums, Color layerColor, int hoveredGUILayer);
         void updateHover(int mouseGridX, int mouseGridY);
         void updateCellLayer(int currentLayer);
     };

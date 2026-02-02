@@ -1,7 +1,9 @@
 #include <cmath>
 #include "grid.h"
 
-Grid::Grid() : gridWidth(30), gridHeight(30), cellSize(16)
+#include <iostream>
+
+Grid::Grid() : gridWidth(32), gridHeight(32), cellSize(16)
 {
     initWindow();
     initCells();
@@ -47,7 +49,7 @@ void Grid::drawGrid()
         for (int x = 0; x < cells.size(); x++)
         {
             cells[x][y].updateHover(mouseGridX, mouseGridY);
-            cells[x][y].render(drawLayerNums, layerColor[cells[x][y].layer]);
+            cells[x][y].render(drawLayerNums, layerColor[cells[x][y].layer], cells[x][y].layer == hoveredGUILayer ? hoveredGUILayer : -1);
             cells[x][y].updateCellLayer(currentLayer);
         }
     }
@@ -68,7 +70,7 @@ void Grid::resetCells()
     {
         for (int x = 0; x < gridWidth; x++)
         {
-            cells[x][y].layer = 0;
+            cells[x][y].layer = minLayer;
         }
     }
 }
@@ -125,6 +127,11 @@ void Grid::initGUI()
 {
     gui.setCellSize(cellSize * 2);
     gui.onClickGUI = [this](int layer) { currentLayer = layer; };
+    gui.onHoverGUI = [this](int layer)
+    {
+        hoveredGUILayer = layer;
+    };
+    gui.onMouseLeaveGUI = [this]() { hoveredGUILayer = -1; };
 }
 
 void Grid::initUserCamera()
@@ -143,10 +150,11 @@ Grid::Cell::Cell(int x, int y, int cellSize, Rectangle cellRect, int minLayer, i
 {
 }
 
-void Grid::Cell::render(bool drawLayerNums, Color layerColor)
+void Grid::Cell::render(bool drawLayerNums, Color layerColor, int hoveredGUILayer)
 {
     DrawRectangle(rect.x, rect.y, rect.width, rect.height, layerColor);
-    DrawRectangleLinesEx(rect, lineThick, isHovered ? cellLinesHoverColor : cellLinesColor);
+    DrawRectangleLinesEx(rect, lineThick, isHovered || hoveredGUILayer == layer ? cellLinesHoverColor : cellLinesColor);
+
     if (drawLayerNums)
         DrawText(TextFormat("%d", layer), x * cellSize + cellSize / (layer == 1 ? 2.2f : 2.7f), y * cellSize + cellSize / 4.5, 6, layerNumColor);
 }
@@ -167,13 +175,13 @@ void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
 
 void Grid::Cell::updateCellLayer(int currentLayer)
 {
-    if ((IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) || !isHovered)
+    if ((IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT) || IsKeyReleased(KEY_SPACE)) || !isHovered)
         layerBeenChanged = false;
 
     if (!isHovered)
         return;
 
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !layerBeenChanged)
+    if ((IsMouseButtonDown(MOUSE_BUTTON_LEFT) || IsKeyDown(KEY_SPACE)) && !layerBeenChanged)
     {
         layer = currentLayer;
         layerBeenChanged = true;

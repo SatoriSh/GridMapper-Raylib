@@ -9,7 +9,9 @@ class GUI
     GUI();
     ~GUI();
 
+    std::function<void(int layer)> onHoverGUI;
     std::function<void(int layer)> onClickGUI;
+    std::function<void()> onMouseLeaveGUI;
 
     void drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int maxLayer);
     void setCellSize(int cellSize);
