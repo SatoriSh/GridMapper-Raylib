@@ -22,14 +22,12 @@ void Grid::process()
         mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
         mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
 
-        if (IsKeyPressed(KEY_R))
-            resetCells();
+        inputHandler();
 
         BeginMode2D(userCamera.camera);
         render();
         EndMode2D();
 
-        DrawText(TextFormat("MouseX: %d\nMouseY: %d", mouseGridX, mouseGridY), 15, 15, 20, WHITE);
         EndDrawing();
     }
 }
@@ -41,7 +39,7 @@ void Grid::render()
         for (int x = 0; x < cells.size(); x++)
         {
             cells[x][y].updateHover(mouseGridX, mouseGridY);
-            cells[x][y].render();
+            cells[x][y].render(drawLayerNums);
             cells[x][y].updateCellLayer();
         }
     }
@@ -76,6 +74,15 @@ void Grid::resetCells()
     }
 }
 
+void Grid::inputHandler()
+{
+    if (IsKeyPressed(KEY_R))
+        resetCells();
+
+    if (IsKeyPressed(KEY_N))
+        drawLayerNums = !drawLayerNums;
+}
+
 Grid::~Grid()
 {
     CloseWindow();
@@ -98,11 +105,12 @@ Grid::Cell::Cell(int x, int y, int cellSize, int minLayer, int maxLayer)
     layerColor[9] = {20, 30, 50, 255};
 }
 
-void Grid::Cell::render() 
+void Grid::Cell::render(bool drawLayerNums) 
 {
     DrawRectangle(rect.x, rect.y, rect.width, rect.height, layerColor.at(layer));
     DrawRectangleLinesEx(rect, lineThick, isHovered ? cellLinesHoverColor : cellLinesColor);
-    DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 3, y * cellSize + cellSize / 5, 11, layerNumColor);
+    if (drawLayerNums)
+        DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 3, y * cellSize + cellSize / 5, 11, layerNumColor);
 }
 
 void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
@@ -124,12 +132,15 @@ void Grid::Cell::updateCellLayer()
     if ((IsMouseButtonReleased(MOUSE_BUTTON_LEFT) || IsMouseButtonReleased(MOUSE_BUTTON_RIGHT)) || !isHovered)
         layerBeenChanged = false;
 
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !layerBeenChanged && isHovered)
+    if (!isHovered)
+        return;
+
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT) && !layerBeenChanged)
     {
         layer++;
         layerBeenChanged = true;
     }
-    else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && !layerBeenChanged && isHovered)
+    else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT) && !layerBeenChanged)
     {
         layer--;
         layerBeenChanged = true;
@@ -140,5 +151,4 @@ void Grid::Cell::updateCellLayer()
 
 Grid::Cell::~Cell()
 {
-
 }

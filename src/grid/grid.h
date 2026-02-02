@@ -23,11 +23,13 @@ class Grid
     int cellSize;
     int mouseGridX;
     int mouseGridY;
+    bool drawLayerNums = true;
     UserCamera userCamera;
     void render();
     void initWindow();
     void initCells();
     void resetCells();
+    void inputHandler();
 
     struct Cell
     {
@@ -50,7 +52,7 @@ class Grid
         const Color cellLinesHoverColor = {255, 215, 30, 255};
         const Color layerNumColor = {224, 225, 221, 255};
         std::map<int, Color> layerColor;
-        void render();
+        void render(bool drawLayerNums);
         void updateHover(int mouseGridX, int mouseGridY);
         void updateCellLayer();
     };
