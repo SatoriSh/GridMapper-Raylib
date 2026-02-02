@@ -6,9 +6,8 @@ Grid::Grid() : gridWidth(30), gridHeight(30), cellSize(16)
     initWindow();
     initCells();
     initLayerColors();
-
-    userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
-    userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight()});
+    initGUI();
+    initUserCamera();
 }
 
 void Grid::process()
@@ -38,6 +37,7 @@ void Grid::render()
     drawGrid();
     EndMode2D();
     drawHints();
+    gui.drawLayersHint(layerColor, currentLayer, maxLayer);
 }
 
 void Grid::drawGrid()
@@ -101,7 +101,8 @@ void Grid::initCells()
         cells.emplace_back();
         for (int x = 0; x < gridWidth; x++)
         {
-            cells.back().emplace_back(x, y, cellSize, minLayer, maxLayer);
+            Rectangle cellRect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+            cells.back().emplace_back(x, y, cellSize, cellRect, minLayer, maxLayer);
         }
     }
 }
@@ -120,15 +121,26 @@ void Grid::initLayerColors()
     layerColor[9] = {20, 30, 50, 255};
 }
 
+void Grid::initGUI()
+{
+    gui.setCellSize(cellSize * 2);
+    gui.onClickGUI = [this](int layer) { currentLayer = layer; };
+}
+
+void Grid::initUserCamera()
+{
+    userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
+    userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight()});
+}
+
 Grid::~Grid()
 {
     CloseWindow();
 }
 
-Grid::Cell::Cell(int x, int y, int cellSize, int minLayer, int maxLayer)
-    : x(x), y(y), cellSize(cellSize), minLayer(minLayer), maxLayer(maxLayer)
+Grid::Cell::Cell(int x, int y, int cellSize, Rectangle cellRect, int minLayer, int maxLayer)
+    : x(x), y(y), cellSize(cellSize), rect(cellRect), minLayer(minLayer), maxLayer(maxLayer)
 {
-    rect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
 }
 
 void Grid::Cell::render(bool drawLayerNums, Color layerColor)

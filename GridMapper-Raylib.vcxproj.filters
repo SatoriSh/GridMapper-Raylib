@@ -27,12 +27,18 @@
     <ClCompile Include="src\camera\UserCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\GUI\GUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\grid\grid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\camera\UserCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GUI\GUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,6 +3,7 @@
 #include <map>
 #include "raylib.h"
 #include "../camera/UserCamera.h"
+#include "../GUI/GUI.h"
 
 class Grid
 {
@@ -17,8 +18,8 @@ class Grid
     const int FPS = 60;
     const int minLayer = 0;
     const int maxLayer = 9;
-    int currentLayer = 1;
     const Color backgroundColor = {27, 38, 59, 255};
+    int currentLayer = 1;
     int gridWidth;
     int gridHeight;
     int cellSize;
@@ -26,6 +27,7 @@ class Grid
     int mouseGridY;
     bool drawLayerNums = true;
     UserCamera userCamera;
+    GUI gui;
     std::map<int, Color> layerColor;
     void render();
     void drawGrid();
@@ -33,12 +35,14 @@ class Grid
     void initWindow();
     void initCells();
     void initLayerColors();
+    void initGUI();
+    void initUserCamera();
     void resetCells();
     void inputHandler();
 
     struct Cell
     {
-        Cell(int x, int y, int cellSize, int minLayer, int maxLayer);
+        Cell(int x, int y, int cellSize, Rectangle cellRect, int minLayer, int maxLayer);
         ~Cell();
 
         const int x;
@@ -46,12 +50,12 @@ class Grid
         const int cellSize;
         const float defaultLineThick = 1.0f;
         const float hoverLineThick = 2.0f;
+        Rectangle rect;
         int layer = 0;
         int minLayer;
         int maxLayer;
         bool layerBeenChanged = false;
         bool isHovered = false;
-        Rectangle rect;
         float lineThick = defaultLineThick;
         const Color cellLinesColor = {65, 90, 119, 150};
         const Color cellLinesHoverColor = {255, 215, 30, 255};
