@@ -56,9 +56,10 @@ void Grid::drawGrid()
 void Grid::drawHints()
 {
     int y = 10;
-    DrawText("Select a layer: keys [0-9]", 10, y, 25, GREEN);
-    DrawText("Show/Hide layer numbers: N", 10, y += 30, 25, GREEN);
-    DrawText("Reset grid: R", 10, y += 30, 25, GREEN);
+    Color hintColor = {160, 220, 255, 255};
+    DrawText("Select a layer: keys [0-9]", 10, y, 25, hintColor);
+    DrawText("Show/Hide layer numbers: N", 10, y += 30, 25, hintColor);
+    DrawText("Reset grid: R", 10, y += 30, 25, hintColor);
 }
 
 void Grid::resetCells()
@@ -135,7 +136,7 @@ void Grid::Cell::render(bool drawLayerNums, Color layerColor)
     DrawRectangle(rect.x, rect.y, rect.width, rect.height, layerColor);
     DrawRectangleLinesEx(rect, lineThick, isHovered ? cellLinesHoverColor : cellLinesColor);
     if (drawLayerNums)
-        DrawText(TextFormat("%d", layer), x * cellSize + cellSize / 3, y * cellSize + cellSize / 5, 11, layerNumColor);
+        DrawText(TextFormat("%d", layer), x * cellSize + cellSize / (layer == 1 ? 2.2f : 2.7f), y * cellSize + cellSize / 4.5, 6, layerNumColor);
 }
 
 void Grid::Cell::updateHover(int mouseGridX, int mouseGridY)
