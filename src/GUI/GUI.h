@@ -2,6 +2,7 @@
 #include <map>
 #include <functional>
 #include "raylib.h"
+#include "../../packages/raygui/src/raygui.h"
 
 class GUI
 {

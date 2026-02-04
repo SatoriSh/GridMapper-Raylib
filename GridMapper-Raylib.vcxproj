@@ -127,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="raygui_impl.cpp" />
     <ClCompile Include="src\camera\UserCamera.cpp" />
     <ClCompile Include="src\grid\grid.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
