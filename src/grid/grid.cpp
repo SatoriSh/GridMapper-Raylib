@@ -38,7 +38,7 @@ void Grid::render()
 {
     drawGrid();
     EndMode2D();
-    drawHints();
+    gui.drawHints();
     gui.drawLayersHint(layerColor, currentLayer, maxLayer);
 }
 
@@ -53,15 +53,6 @@ void Grid::drawGrid()
             cells[x][y].updateCellLayer(currentLayer);
         }
     }
-}
-
-void Grid::drawHints()
-{
-    int y = 10;
-    Color hintColor = {160, 220, 255, 255};
-    DrawText("Select a layer: keys [0-9]", 10, y, 25, hintColor);
-    DrawText("Show/Hide layer numbers: N", 10, y += 30, 25, hintColor);
-    DrawText("Reset grid: R", 10, y += 30, 25, hintColor);
 }
 
 void Grid::resetCells()

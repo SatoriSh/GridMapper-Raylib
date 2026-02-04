@@ -39,10 +39,33 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
     currentHoveredInsideLoop != -1 ? onHoverGUI(currentHoveredInsideLoop) : onMouseLeaveGUI();
 }
 
-void GUI::inputHandler(int layer) const
+void GUI::drawHints()
+{
+    DrawRectangleRec(helpRect, DARKBLUE);
+    DrawText("H", 16, 14, 20, WHITE);
+    
+    if (drawHelpRect)
+    {
+        int y = 60;
+        DrawRectangle(5, y - 10, 240, 85, BLUE);
+        DrawText("Select a layer: keys [0-9]", 10, y, 17, WHITE);
+        DrawText("Show/Hide layer numbers: N", 10, y += 25, 17, WHITE);
+        DrawText("Reset grid: R", 10, y += 25, 17, WHITE);
+    }
+}
+
+void GUI::inputHandler(int layer)
 {
     if (CheckCollisionPointRec(GetMousePosition(), cellRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         onClickGUI(layer);
+
+    if (CheckCollisionPointRec(GetMousePosition(), helpRect))
+        drawHelpRect = true;
+    else if (!CheckCollisionPointRec(GetMousePosition(), helpRect) && !IsKeyDown(KEY_H))
+        drawHelpRect = false;
+
+    if (IsKeyDown(KEY_H))
+        drawHelpRect = true;
 }
 
 void GUI::setCellSize(int cellSize)

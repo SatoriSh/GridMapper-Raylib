@@ -30,13 +30,12 @@ class Grid
     UserCamera userCamera;
     GUI gui;
     std::map<int, Color> layerColor;
-    void render();
-    void drawGrid();
-    void drawHints();
     void initWindow();
     void initCells();
     void initLayerColors();
     void initGUI();
+    void render();
+    void drawGrid();
     void initUserCamera();
     void resetCells();
     void inputHandler();

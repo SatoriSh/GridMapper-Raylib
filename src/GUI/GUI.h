@@ -14,14 +14,18 @@ class GUI
     std::function<void()> onMouseLeaveGUI;
 
     void drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int maxLayer);
+    void drawHints();
     void setCellSize(int cellSize);
   private:
-    Rectangle cellRect = {0,0,0,0};
+    Rectangle cellRect = {0, 0, 0, 0};
+    Rectangle helpRect = {5, 5, 35, 35};
+    bool drawHelpRect = false;
     int cellSize = 0;
     const int offsetX = 50;
     int offsetY = 0;
     const float lineThick = 3.5f;
     const Color cellLinesCurrentLayerColor = {255, 215, 30, 255};
+    const Color hintColor = ORANGE;
 
-    void inputHandler(int layer) const;
+    void inputHandler(int layer);
 };
