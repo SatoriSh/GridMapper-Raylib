@@ -13,13 +13,33 @@ class GUI
     std::function<void(int layer)> onHoverGUI;
     std::function<void(int layer)> onClickGUI;
     std::function<void()> onMouseLeaveGUI;
+    std::function<void()> onBackButtonClicked;
 
+    bool getGridSize();
     void drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int maxLayer);
+    void drawBackButton();
     void drawHints();
     void setCellSize(int cellSize);
+
+    int mapWidth;
+    int mapHeight;
   private:
+    const float textBoxWidth = 65;
+    const float textBoxHeight = 65;
+    char textBoxWidthText[35] = "map width";
+    char textBoxHeightText[35] = "map height";
+    bool isInEditModTextBoxWidth = false;
+    bool isInEditModTextBoxHeight = false;
+    Rectangle textBoxWidthRect = {(float)GetScreenWidth() / 2 - textBoxWidth / 2, (float)GetScreenHeight() / 2 - textBoxHeight / 2 - textBoxHeight, textBoxWidth, textBoxHeight};
+    Rectangle textBoxHeightRect = {(float)GetScreenWidth() / 2 - textBoxWidth / 2, (float)GetScreenHeight() / 2 - textBoxHeight / 2 + textBoxHeight / 2, textBoxWidth, textBoxHeight};
+    const int mapWidthMin = 8;
+    const int mapHeightMin = 8;
+    const int mapWidthMax = 64;
+    const int mapHeightMax = 64;
+
     Rectangle cellRect = {0, 0, 0, 0};
     Rectangle helpRect = {5, 5, 35, 35};
+    Rectangle backButtonRect = {5, (float)GetScreenHeight() - 40, 35, 35};
     bool drawHelpRect = false;
     int cellSize = 0;
     const int offsetX = 50;
@@ -29,4 +49,5 @@ class GUI
     const Color hintColor = ORANGE;
 
     void inputHandler(int layer);
+    void sanitizeInput(char *buffer);
 };

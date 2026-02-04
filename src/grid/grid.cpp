@@ -3,43 +3,49 @@
 
 #include <iostream>
 
-Grid::Grid() : gridWidth(32), gridHeight(32), cellSize(16)
+Grid::Grid(std::unique_ptr<GUI> guiPtr) : gui(std::move(guiPtr)), cellSize(16)
 {
-    initWindow();
     initCells();
     initLayerColors();
     initGUI();
     initUserCamera();
 }
 
+void Grid::reset(int gridWidth, int gridHeight)
+{
+    cells.clear();
+    this->gridWidth = gridWidth;
+    this->gridHeight = gridHeight;
+    initCells();
+    initUserCamera();
+}
+
 void Grid::process()
 {
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
-        ClearBackground(backgroundColor);
+    BeginDrawing();
+    ClearBackground(backgroundColor);
 
-        userCamera.process();
+    userCamera.process();
 
-        Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), userCamera.camera);
-        mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
-        mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
+    Vector2 mouseWorldPos = GetScreenToWorld2D(GetMousePosition(), userCamera.camera);
+    mouseGridX = (int)floor(mouseWorldPos.x / cellSize);
+    mouseGridY = (int)floor(mouseWorldPos.y / cellSize);
 
-        inputHandler();
+    inputHandler();
 
-        BeginMode2D(userCamera.camera);
-        render();
+    BeginMode2D(userCamera.camera);
+    render();
 
-        EndDrawing();
-    }
+    EndDrawing();
 }
 
 void Grid::render()
 {
     drawGrid();
     EndMode2D();
-    gui.drawHints();
-    gui.drawLayersHint(layerColor, currentLayer, maxLayer);
+    gui->drawHints();
+    gui->drawLayersHint(layerColor, currentLayer, maxLayer);
+    gui->drawBackButton();
 }
 
 void Grid::drawGrid()
@@ -81,12 +87,6 @@ void Grid::inputHandler()
     }
 }
 
-void Grid::initWindow()
-{
-    InitWindow(screenWidth, screenHeight, "GridMapper");
-    SetTargetFPS(FPS);
-}
-
 void Grid::initCells()
 {
     for (int y = 0; y < gridHeight; y++)
@@ -116,19 +116,16 @@ void Grid::initLayerColors()
 
 void Grid::initGUI()
 {
-    gui.setCellSize(cellSize * 2);
-    gui.onClickGUI = [this](int layer) { currentLayer = layer; };
-    gui.onHoverGUI = [this](int layer)
-    {
-        hoveredGUILayer = layer;
-    };
-    gui.onMouseLeaveGUI = [this]() { hoveredGUILayer = -1; };
+    gui->setCellSize(cellSize * 2);
+    gui->onClickGUI = [this](int layer) { currentLayer = layer; };
+    gui->onHoverGUI = [this](int layer) { hoveredGUILayer = layer; };
+    gui->onMouseLeaveGUI = [this]() { hoveredGUILayer = -1; };
 }
 
 void Grid::initUserCamera()
 {
     userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
-    userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight()});
+    userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight() + GetScreenHeight() / 2});
 }
 
 Grid::~Grid()

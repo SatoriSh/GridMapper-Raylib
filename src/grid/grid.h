@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <map>
+#include <memory>
 #include "raylib.h"
 #include "../camera/UserCamera.h"
 #include "../GUI/GUI.h"
@@ -8,14 +9,14 @@
 class Grid
 {
   public:
-    Grid();
+    Grid(std::unique_ptr<GUI> guiPtr);
     ~Grid();
+
+    void reset(int gridWidth, int gridHeight);
+    std::unique_ptr<GUI> gui;
 
     void process();
   private:
-    const int screenWidth = 1280;
-    const int screenHeight = 720;
-    const int FPS = 60;
     const int minLayer = 0;
     const int maxLayer = 9;
     const Color backgroundColor = {27, 38, 59, 255};
@@ -28,9 +29,7 @@ class Grid
     bool drawLayerNums = true;
     int hoveredGUILayer = -1;
     UserCamera userCamera;
-    GUI gui;
     std::map<int, Color> layerColor;
-    void initWindow();
     void initCells();
     void initLayerColors();
     void initGUI();

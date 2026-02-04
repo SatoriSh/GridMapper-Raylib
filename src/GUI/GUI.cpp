@@ -1,7 +1,72 @@
+#include <string>
 #include "GUI.h"
 
 GUI::GUI()
 {
+}
+
+bool GUI::getGridSize()
+{
+    if (WindowShouldClose()) return true;
+
+    BeginDrawing();
+
+    ClearBackground({27, 38, 59, 255});
+
+    GuiTextBox(textBoxWidthRect, textBoxWidthText, 35, isInEditModTextBoxWidth);
+    GuiTextBox(textBoxHeightRect, textBoxHeightText, 35, isInEditModTextBoxHeight);
+
+    if (CheckCollisionPointRec(GetMousePosition(), textBoxWidthRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isInEditModTextBoxWidth)
+    {
+        textBoxWidthText[0] = '\0';
+        isInEditModTextBoxWidth = true;
+        isInEditModTextBoxHeight = false;
+    }
+    else if (CheckCollisionPointRec(GetMousePosition(), textBoxHeightRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isInEditModTextBoxHeight)
+    {
+        textBoxHeightText[0] = '\0';
+        isInEditModTextBoxHeight = true;
+        isInEditModTextBoxWidth = false;
+        
+    }
+    if (IsKeyPressed(KEY_ENTER) || (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !CheckCollisionPointRec(GetMousePosition(), textBoxWidthRect) && !CheckCollisionPointRec(GetMousePosition(), textBoxHeightRect)))
+    {
+        isInEditModTextBoxWidth = false;
+        isInEditModTextBoxHeight = false;
+    }
+
+    if (IsKeyPressed(KEY_ENTER) && textBoxWidthText[0] != '\0' && textBoxHeightText[0] != '\0')
+    {
+        try
+        {
+            sanitizeInput(textBoxWidthText);
+            sanitizeInput(textBoxHeightText);
+
+            std::string tempStringWidth(textBoxWidthText); // конвертируем массив char в строку
+            if (!tempStringWidth.empty())
+            {
+                mapWidth = std::stoi(tempStringWidth);
+            }
+
+            std::string tempStringHeight(textBoxHeightText);
+            if (!tempStringHeight.empty())
+            {
+                mapHeight = std::stoi(tempStringHeight);
+            }
+
+            if (mapWidth >= mapWidthMin && mapWidth <= mapWidthMax && mapHeight >= mapHeightMin && mapHeight <= mapHeightMax) 
+            {
+                return true;
+            }
+        }
+        catch (...)
+        {
+
+        }
+    }
+
+    EndDrawing();
+    return false;
 }
 
 void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int maxLayer)
@@ -43,6 +108,9 @@ void GUI::drawHints()
 {
     DrawRectangleRec(helpRect, DARKBLUE);
     DrawText("H", 16, 14, 20, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), helpRect))
+        DrawRectangleLinesEx(helpRect, 1.15f, WHITE);
     
     if (drawHelpRect)
     {
@@ -52,6 +120,18 @@ void GUI::drawHints()
         DrawText("Show/Hide layer numbers: N", 10, y += 25, 17, WHITE);
         DrawText("Reset grid: R", 10, y += 25, 17, WHITE);
     }
+}
+
+void GUI::drawBackButton()
+{
+    DrawRectangleRec(backButtonRect, DARKBLUE);
+    DrawText("<", 16, GetScreenHeight() - 37, 30, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), backButtonRect))
+        DrawRectangleLinesEx(backButtonRect, 1.15f, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), backButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        onBackButtonClicked();
 }
 
 void GUI::inputHandler(int layer)
@@ -66,6 +146,13 @@ void GUI::inputHandler(int layer)
 
     if (IsKeyDown(KEY_H))
         drawHelpRect = true;
+}
+
+void GUI::sanitizeInput(char *buffer)
+{
+    std::string s(buffer);
+    s.erase(std::remove_if(s.begin(), s.end(), [](unsigned char c) { return !std::isdigit(c); }), s.end());
+    snprintf(buffer, 35, "%s", s.c_str());
 }
 
 void GUI::setCellSize(int cellSize)
