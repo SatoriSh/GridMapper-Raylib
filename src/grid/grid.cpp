@@ -46,17 +46,18 @@ void Grid::render()
     gui->drawHints();
     gui->drawLayersHint(layerColor, currentLayer, maxLayer);
     gui->drawBackButton();
+    gui->showFileBeenSaved(fileSavedTime);
 }
 
 void Grid::drawGrid()
 {
-    for (int y = 0; y < cells[0].size(); y++)
+    for (int y = 0; y < gridHeight; y++)
     {
-        for (int x = 0; x < cells.size(); x++)
+        for (int x = 0; x < gridWidth; x++)
         {
-            cells[x][y].updateHover(mouseGridX, mouseGridY);
-            cells[x][y].render(drawLayerNums, layerColor[cells[x][y].layer], cells[x][y].layer == hoveredGUILayer ? hoveredGUILayer : -1);
-            cells[x][y].updateCellLayer(currentLayer);
+            cells[y][x].updateHover(mouseGridX, mouseGridY);
+            cells[y][x].render(drawLayerNums, layerColor[cells[y][x].layer], cells[y][x].layer == hoveredGUILayer ? hoveredGUILayer : -1);
+            cells[y][x].updateCellLayer(currentLayer);
         }
     }
 }
@@ -67,7 +68,7 @@ void Grid::resetCells()
     {
         for (int x = 0; x < gridWidth; x++)
         {
-            cells[x][y].layer = minLayer;
+            cells[y][x].layer = minLayer;
         }
     }
 }
@@ -85,16 +86,21 @@ void Grid::inputHandler()
         if (IsKeyPressed(KEY_ZERO + i))
             currentLayer = i;
     }
+
+    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_S))
+        saveGrid();
 }
 
 void Grid::initCells()
 {
     for (int y = 0; y < gridHeight; y++)
     {
-        cells.emplace_back();
+        cells.emplace_back(); // добавляет новый пустой ряд в конец списка рядов
         for (int x = 0; x < gridWidth; x++)
         {
             Rectangle cellRect = {(float)x * cellSize, (float)y * cellSize, (float)cellSize, (float)cellSize};
+            
+            // последний добавленный ряд
             cells.back().emplace_back(x, y, cellSize, cellRect, minLayer, maxLayer);
         }
     }
@@ -126,6 +132,24 @@ void Grid::initUserCamera()
 {
     userCamera.setCameraTarget({float(gridWidth * cellSize) / 2, float(gridHeight * cellSize) / 2});
     userCamera.setCameraWorldBounds({(float)-GetScreenWidth() / 2, (float)-GetScreenHeight() / 2, (float)GetScreenWidth(), (float)GetScreenHeight() + GetScreenHeight() / 2});
+}
+
+void Grid::saveGrid()
+{
+    std::vector<std::vector<int>> grid;
+
+    for (int y = 0; y < gridHeight; y++)
+    {
+        grid.emplace_back();
+        for (int x = 0; x < gridWidth; x++)
+        {
+            grid.back().emplace_back(cells[y][x].layer);
+        }
+    }
+
+    GridExportManager::exportGrid(grid);
+    fileSavedTime = GetTime();
+    gui->fileBeenSaved = true;
 }
 
 Grid::~Grid()

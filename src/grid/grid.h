@@ -5,6 +5,7 @@
 #include "raylib.h"
 #include "../camera/UserCamera.h"
 #include "../GUI/GUI.h"
+#include "../GridExportManager/GridExportManager.h"
 
 class Grid
 {
@@ -30,6 +31,7 @@ class Grid
     int hoveredGUILayer = -1;
     UserCamera userCamera;
     std::map<int, Color> layerColor;
+    double fileSavedTime = 0;
     void initCells();
     void initLayerColors();
     void initGUI();
@@ -38,6 +40,7 @@ class Grid
     void initUserCamera();
     void resetCells();
     void inputHandler();
+    void saveGrid();
 
     struct Cell
     {

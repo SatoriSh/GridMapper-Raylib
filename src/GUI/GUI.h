@@ -20,6 +20,8 @@ class GUI
     void drawBackButton();
     void drawHints();
     void setCellSize(int cellSize);
+    void showFileBeenSaved(double currentTime);
+    bool fileBeenSaved = false;
 
     int mapWidth;
     int mapHeight;
@@ -32,10 +34,11 @@ class GUI
     bool isInEditModTextBoxHeight = false;
     Rectangle textBoxWidthRect = {(float)GetScreenWidth() / 2 - textBoxWidth / 2, (float)GetScreenHeight() / 2 - textBoxHeight / 2 - textBoxHeight, textBoxWidth, textBoxHeight};
     Rectangle textBoxHeightRect = {(float)GetScreenWidth() / 2 - textBoxWidth / 2, (float)GetScreenHeight() / 2 - textBoxHeight / 2 + textBoxHeight / 2, textBoxWidth, textBoxHeight};
-    const int mapWidthMin = 8;
-    const int mapHeightMin = 8;
+    const int mapWidthMin = 4;
+    const int mapHeightMin = 4;
     const int mapWidthMax = 64;
     const int mapHeightMax = 64;
+    const float timeToShowFileBeenSaved = 2.0f;
 
     Rectangle cellRect = {0, 0, 0, 0};
     Rectangle helpRect = {5, 5, 35, 35};

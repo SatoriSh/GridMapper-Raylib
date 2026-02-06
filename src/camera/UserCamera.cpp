@@ -36,7 +36,7 @@ void UserCamera::cameraInputHandler()
         delta.x -= 1.0f;
     if (IsKeyDown(KEY_W) && camera.target.y > worldBounds.y)
         delta.y -= 1.0f;
-    if (IsKeyDown(KEY_S) && camera.target.y < worldBounds.height)
+    if (IsKeyDown(KEY_S) && !IsKeyDown(KEY_LEFT_CONTROL) && camera.target.y < worldBounds.height)
         delta.y += 1.0f;
 
     if (delta != Vector2{0,0})

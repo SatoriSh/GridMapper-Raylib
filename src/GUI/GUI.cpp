@@ -131,7 +131,10 @@ void GUI::drawBackButton()
         DrawRectangleLinesEx(backButtonRect, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
         onBackButtonClicked();
+        fileBeenSaved = false;
+    }
 }
 
 void GUI::inputHandler(int layer)
@@ -159,6 +162,17 @@ void GUI::setCellSize(int cellSize)
 {
     this->cellSize = cellSize;
     offsetY = cellSize + cellSize / 2;
+}
+
+void GUI::showFileBeenSaved(double currentTime)
+{
+    if (fileBeenSaved)
+    {
+        if (GetTime() - currentTime <= timeToShowFileBeenSaved)
+            DrawText("The file is saved!", GetScreenWidth() / 2 - 150, 50, 30, GREEN);
+        else
+            fileBeenSaved = false;
+    }
 }
 
 GUI::~GUI()

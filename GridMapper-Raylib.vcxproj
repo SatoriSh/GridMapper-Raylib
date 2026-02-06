@@ -129,11 +129,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="raygui_impl.cpp" />
     <ClCompile Include="src\camera\UserCamera.cpp" />
+    <ClCompile Include="src\GridExportManager\GridExportManager.cpp" />
     <ClCompile Include="src\grid\grid.cpp" />
     <ClCompile Include="src\GUI\GUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\camera\UserCamera.h" />
+    <ClInclude Include="src\GridExportManager\GridExportManager.h" />
     <ClInclude Include="src\grid\grid.h" />
     <ClInclude Include="src\GUI\GUI.h" />
   </ItemGroup>
