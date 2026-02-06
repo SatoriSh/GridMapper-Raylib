@@ -65,6 +65,27 @@ bool GUI::getGridSize()
         }
     }
 
+    if (IsKeyPressed(KEY_TAB))
+    {
+        if (isInEditModTextBoxWidth)
+        {
+            isInEditModTextBoxWidth = false;
+            isInEditModTextBoxHeight = true;
+            textBoxHeightText[0] = '\0';
+        }
+        else if (isInEditModTextBoxHeight)
+        {
+            isInEditModTextBoxWidth = true;
+            isInEditModTextBoxHeight = false;
+            textBoxWidthText[0] = '\0';
+        }
+        else if (!isInEditModTextBoxWidth && !isInEditModTextBoxHeight)
+        {
+            textBoxWidthText[0] = '\0';
+            isInEditModTextBoxWidth = true;
+        }
+    }
+
     EndDrawing();
     return false;
 }
