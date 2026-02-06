@@ -42,6 +42,7 @@ class GUI
 
     Rectangle cellRect = {0, 0, 0, 0};
     Rectangle helpRect = {5, 5, 35, 35};
+    Rectangle continueRect = {(float)GetScreenWidth() / 2 - 17, ((float)GetScreenHeight() / 2 - textBoxHeight / 2 + textBoxHeight / 2) + 100, 35, 35};
     Rectangle backButtonRect = {5, (float)GetScreenHeight() - 40, 35, 35};
     bool drawHelpRect = false;
     int cellSize = 0;

@@ -21,6 +21,8 @@ class Grid
     const int minLayer = 0;
     const int maxLayer = 9;
     const Color backgroundColor = {27, 38, 59, 255};
+    float activationTime;
+    const float initialSafeTime = 0.5f;
     int currentLayer = 1;
     int gridWidth;
     int gridHeight;

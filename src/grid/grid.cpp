@@ -1,7 +1,4 @@
-#include <cmath>
 #include "grid.h"
-
-#include <iostream>
 
 Grid::Grid(std::unique_ptr<GUI> guiPtr) : gui(std::move(guiPtr)), cellSize(16)
 {
@@ -14,8 +11,10 @@ Grid::Grid(std::unique_ptr<GUI> guiPtr) : gui(std::move(guiPtr)), cellSize(16)
 void Grid::reset(int gridWidth, int gridHeight)
 {
     cells.clear();
+    currentLayer = 1;
     this->gridWidth = gridWidth;
     this->gridHeight = gridHeight;
+    activationTime = GetTime();
     initCells();
     initUserCamera();
 }
@@ -57,7 +56,8 @@ void Grid::drawGrid()
         {
             cells[y][x].updateHover(mouseGridX, mouseGridY);
             cells[y][x].render(drawLayerNums, layerColor[cells[y][x].layer], cells[y][x].layer == hoveredGUILayer ? hoveredGUILayer : -1);
-            cells[y][x].updateCellLayer(currentLayer);
+            if (GetTime() - activationTime > initialSafeTime)
+                cells[y][x].updateCellLayer(currentLayer);
         }
     }
 }

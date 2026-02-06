@@ -1,4 +1,5 @@
 #include <string>
+
 #include "GUI.h"
 
 GUI::GUI()
@@ -15,6 +16,12 @@ bool GUI::getGridSize()
 
     GuiTextBox(textBoxWidthRect, textBoxWidthText, 35, isInEditModTextBoxWidth);
     GuiTextBox(textBoxHeightRect, textBoxHeightText, 35, isInEditModTextBoxHeight);
+
+    DrawRectangleRec(continueRect, DARKBLUE);
+    DrawText(">", continueRect.x + 13, continueRect.y + 5, 30, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), continueRect))
+        DrawRectangleLinesEx(continueRect, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), textBoxWidthRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isInEditModTextBoxWidth)
     {
@@ -35,7 +42,7 @@ bool GUI::getGridSize()
         isInEditModTextBoxHeight = false;
     }
 
-    if (IsKeyPressed(KEY_ENTER) && textBoxWidthText[0] != '\0' && textBoxHeightText[0] != '\0')
+    if ((IsKeyPressed(KEY_ENTER) || (CheckCollisionPointRec(GetMousePosition(), continueRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) && textBoxWidthText[0] != '\0' && textBoxHeightText[0] != '\0')
     {
         try
         {
@@ -84,6 +91,15 @@ bool GUI::getGridSize()
             textBoxWidthText[0] = '\0';
             isInEditModTextBoxWidth = true;
         }
+    }
+
+    if (!isInEditModTextBoxWidth && textBoxWidthText[0] == '\0')
+    {
+        strcpy_s(textBoxWidthText, "map width");
+    }
+    if (!isInEditModTextBoxHeight && textBoxHeightText[0] == '\0')
+    {
+        strcpy_s(textBoxHeightText, "map height");
     }
 
     EndDrawing();
@@ -155,6 +171,8 @@ void GUI::drawBackButton()
     {
         onBackButtonClicked();
         fileBeenSaved = false;
+        mapWidth = 0;
+        mapHeight = 0;
     }
 }
 
