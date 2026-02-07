@@ -122,18 +122,18 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
 
         inputHandler(i);
 
-        DrawRectangle(cellRect.x, cellRect.y, cellRect.width, cellRect.height, layerColor[i]);
+        DrawRectangleRounded(cellRect, 0.3f, 16, layerColor[i]);
 
         if (CheckCollisionPointRec(GetMousePosition(), cellRect))
         {
-            DrawRectangleLinesEx(cellRect, lineThick / 2, WHITE);
+            DrawRectangleRoundedLinesEx(cellRect, 0.3f, 16, lineThick / 2, WHITE);
             currentHoveredInsideLoop = i;
         }
 
         if (i == currentLayer)
-            DrawRectangleLinesEx(cellRect, lineThick, cellLinesCurrentLayerColor);
+            DrawRectangleRoundedLinesEx(cellRect, 0.3f, 16, lineThick, cellLinesCurrentLayerColor);
 
-        DrawText(TextFormat("%d", i), cellRect.x + cellSize / 2 - 4, cellRect.y + cellSize / 2 - 6, 12, {224, 225, 221, 255});
+        DrawText(TextFormat("%d", i), cellRect.x + cellSize / 2 - (i == 1 ? 1 : 4), cellRect.y + cellSize / 2 - 6, 12, {224, 225, 221, 255});
 
         y += offsetY;
     }
@@ -144,18 +144,18 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
 void GUI::drawHints()
 {
     //DrawRectangleRec(helpRect, DARKBLUE);
-    DrawRectangleRounded(helpRect, 0.3f, 4, DARKBLUE);
+    DrawRectangleRounded(helpRect, 0.3f, 16, DARKBLUE);
     DrawText("?", 15.5, 12, 25, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), helpRect))
-        DrawRectangleRoundedLinesEx(helpRect, 0.3f, 4, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(helpRect, 0.3f, 16, 1.15f, WHITE);
     
     if (drawHelpRect)
     {
         int x = 12;
         int y = 60;
 
-        DrawRectangleRounded({5, (float)y - 10, 240, 112}, 0.3f, 4, BLUE);
+        DrawRectangleRounded({5, (float)y - 10, 240, 112}, 0.3f, 16, BLUE);
         DrawText("Select a layer: keys [0-9]", x, y, 17, WHITE);
         DrawText("Show/Hide layer numbers: N", x, y += 25, 17, WHITE);
         DrawText("Reset grid: R", x, y += 25, 17, WHITE);
@@ -165,11 +165,11 @@ void GUI::drawHints()
 
 void GUI::drawBackButton()
 {
-    DrawRectangleRounded(backButtonRect, 0.3f, 4, DARKBLUE);
+    DrawRectangleRounded(backButtonRect, 0.3f, 16, DARKBLUE);
     DrawText("<", 16, GetScreenHeight() - 39, 35, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backButtonRect))
-        DrawRectangleRoundedLinesEx(backButtonRect, 0.3f, 4, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(backButtonRect, 0.3f, 16, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -220,11 +220,11 @@ void GUI::showFileBeenSaved(double currentTime)
 
 void GUI::drawSaveButton()
 {
-    DrawRectangleRounded(saveButtonRect, 0.3f, 4, DARKBLUE);
+    DrawRectangleRounded(saveButtonRect, 0.3f, 16, DARKBLUE);
     DrawText("save", GetScreenWidth() - 85, 7, 30, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), saveButtonRect))
-        DrawRectangleRoundedLinesEx(saveButtonRect, 0.3f, 4, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(saveButtonRect, 0.3f, 16, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), saveButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
         onSaveButtonClicked();

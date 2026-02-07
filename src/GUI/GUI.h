@@ -49,9 +49,9 @@ class GUI
     Rectangle saveButtonRect = {(float)GetScreenWidth() - 95, 5, 90, 35};
     bool drawHelpRect = false;
     int cellSize = 0;
-    const int offsetX = 50;
+    const int offsetX = 65;
     int offsetY = 0;
-    const float lineThick = 3.5f;
+    const float lineThick = 3.0f;
     const Color cellLinesCurrentLayerColor = {255, 215, 30, 255};
     const Color hintColor = ORANGE;
 
