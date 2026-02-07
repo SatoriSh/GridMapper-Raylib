@@ -143,7 +143,6 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
 
 void GUI::drawHints()
 {
-    //DrawRectangleRec(helpRect, DARKBLUE);
     DrawRectangleRounded(helpRect, 0.3f, 16, DARKBLUE);
     DrawText("?", 15.5, 12, 25, WHITE);
 
