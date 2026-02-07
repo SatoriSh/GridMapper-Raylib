@@ -115,9 +115,9 @@ void Grid::initLayerColors()
     layerColor[3] = {62, 88, 121, 255};
     layerColor[4] = {83, 113, 145, 255};
     layerColor[5] = {60, 130, 140, 255};
-    layerColor[6] = {70, 110, 90, 255};
-    layerColor[7] = {120, 90, 80, 255};
-    layerColor[8] = {94, 84, 115, 255};
+    layerColor[6] = {100, 160, 100, 255};
+    layerColor[7] = {180, 100, 80, 255};
+    layerColor[8] = {140, 100, 180, 255};
     layerColor[9] = {20, 30, 50, 255};
 }
 
