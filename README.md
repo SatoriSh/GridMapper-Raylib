@@ -52,3 +52,24 @@ The `GridExportManager` generates a space-delimited file that is easy to parse i
 [Width] [Height]
 [Row 0: Cell 0] [Row 0: Cell 1] ...
 [Row 1: Cell 0] [Row 1: Cell 1] ...
+```
+
+### Dependencies
+* **Language**: C++17.
+* **Graphics**: Raylib.
+* **UI**: Raygui.
+
+---
+
+## 🚀 Building and Running
+1.  Ensure **Raylib** is installed and correctly linked in your environment.
+2.  Include all source files from the `src` directory.
+3.  Compile using your preferred C++ compiler:
+    ```bash
+    g++ main.cpp src/*.cpp -lraylib -o GridEditor
+    ```
+4.  Run the executable and set your map dimensions in the initial GUI.
+
+---
+
+*Developed as a tool for efficient 2D game level design.*
