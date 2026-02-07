@@ -17,11 +17,11 @@ bool GUI::getGridSize()
     GuiTextBox(textBoxWidthRect, textBoxWidthText, 35, isInEditModTextBoxWidth);
     GuiTextBox(textBoxHeightRect, textBoxHeightText, 35, isInEditModTextBoxHeight);
 
-    DrawRectangleRec(continueRect, DARKBLUE);
+    DrawRectangleRounded(continueRect, 0.3f, 4, DARKBLUE);
     DrawText(">", continueRect.x + 13, continueRect.y + 5, 30, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), continueRect))
-        DrawRectangleLinesEx(continueRect, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(continueRect, 0.3f, 4, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), textBoxWidthRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isInEditModTextBoxWidth)
     {
@@ -143,29 +143,33 @@ void GUI::drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int 
 
 void GUI::drawHints()
 {
-    DrawRectangleRec(helpRect, DARKBLUE);
-    DrawText("H", 16, 14, 20, WHITE);
+    //DrawRectangleRec(helpRect, DARKBLUE);
+    DrawRectangleRounded(helpRect, 0.3f, 4, DARKBLUE);
+    DrawText("?", 15.5, 12, 25, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), helpRect))
-        DrawRectangleLinesEx(helpRect, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(helpRect, 0.3f, 4, 1.15f, WHITE);
     
     if (drawHelpRect)
     {
+        int x = 12;
         int y = 60;
-        DrawRectangle(5, y - 10, 240, 85, BLUE);
-        DrawText("Select a layer: keys [0-9]", 10, y, 17, WHITE);
-        DrawText("Show/Hide layer numbers: N", 10, y += 25, 17, WHITE);
-        DrawText("Reset grid: R", 10, y += 25, 17, WHITE);
+
+        DrawRectangleRounded({5, (float)y - 10, 240, 112}, 0.3f, 4, BLUE);
+        DrawText("Select a layer: keys [0-9]", x, y, 17, WHITE);
+        DrawText("Show/Hide layer numbers: N", x, y += 25, 17, WHITE);
+        DrawText("Reset grid: R", x, y += 25, 17, WHITE);
+        DrawText("Save grid: CTRL + S", x, y += 25, 17, WHITE);
     }
 }
 
 void GUI::drawBackButton()
 {
-    DrawRectangleRec(backButtonRect, DARKBLUE);
-    DrawText("<", 16, GetScreenHeight() - 37, 30, WHITE);
+    DrawRectangleRounded(backButtonRect, 0.3f, 4, DARKBLUE);
+    DrawText("<", 16, GetScreenHeight() - 39, 35, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backButtonRect))
-        DrawRectangleLinesEx(backButtonRect, 1.15f, WHITE);
+        DrawRectangleRoundedLinesEx(backButtonRect, 0.3f, 4, 1.15f, WHITE);
 
     if (CheckCollisionPointRec(GetMousePosition(), backButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
@@ -212,6 +216,18 @@ void GUI::showFileBeenSaved(double currentTime)
         else
             fileBeenSaved = false;
     }
+}
+
+void GUI::drawSaveButton()
+{
+    DrawRectangleRounded(saveButtonRect, 0.3f, 4, DARKBLUE);
+    DrawText("save", GetScreenWidth() - 85, 7, 30, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), saveButtonRect))
+        DrawRectangleRoundedLinesEx(saveButtonRect, 0.3f, 4, 1.15f, WHITE);
+
+    if (CheckCollisionPointRec(GetMousePosition(), saveButtonRect) && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+        onSaveButtonClicked();
 }
 
 GUI::~GUI()

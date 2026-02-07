@@ -14,12 +14,14 @@ class GUI
     std::function<void(int layer)> onClickGUI;
     std::function<void()> onMouseLeaveGUI;
     std::function<void()> onBackButtonClicked;
+    std::function<void()> onSaveButtonClicked;
 
     bool getGridSize();
     void drawLayersHint(std::map<int, Color> layerColor, int currentLayer, int maxLayer);
     void drawBackButton();
     void drawHints();
     void setCellSize(int cellSize);
+    void drawSaveButton();
     void showFileBeenSaved(double currentTime);
     bool fileBeenSaved = false;
 
@@ -44,6 +46,7 @@ class GUI
     Rectangle helpRect = {5, 5, 35, 35};
     Rectangle continueRect = {(float)GetScreenWidth() / 2 - 17, ((float)GetScreenHeight() / 2 - textBoxHeight / 2 + textBoxHeight / 2) + 100, 35, 35};
     Rectangle backButtonRect = {5, (float)GetScreenHeight() - 40, 35, 35};
+    Rectangle saveButtonRect = {(float)GetScreenWidth() - 95, 5, 90, 35};
     bool drawHelpRect = false;
     int cellSize = 0;
     const int offsetX = 50;

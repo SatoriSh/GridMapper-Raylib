@@ -46,6 +46,7 @@ void Grid::render()
     gui->drawLayersHint(layerColor, currentLayer, maxLayer);
     gui->drawBackButton();
     gui->showFileBeenSaved(fileSavedTime);
+    gui->drawSaveButton();
 }
 
 void Grid::drawGrid()
@@ -126,6 +127,7 @@ void Grid::initGUI()
     gui->onClickGUI = [this](int layer) { currentLayer = layer; };
     gui->onHoverGUI = [this](int layer) { hoveredGUILayer = layer; };
     gui->onMouseLeaveGUI = [this]() { hoveredGUILayer = -1; };
+    gui->onSaveButtonClicked = [this]() { saveGrid(); };
 }
 
 void Grid::initUserCamera()
