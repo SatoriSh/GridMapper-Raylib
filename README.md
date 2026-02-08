@@ -4,7 +4,7 @@
   <img src="https://github.com/user-attachments/assets/b0b93380-f1f2-482f-88f6-59d467246d90" width="400" alt="2D Grid Map Editor Logo">
 </p>
 
-[![Itch.io](https://img.shields.io/badge/Play_on_Itch.io-FA5C5C?style=for-the-badge&logo=itch.io&logoColor=white)](https://satorish.itch.io/gridmapper)
+[![Download on Itch.io](https://img.shields.io/badge/Download_on_Itch.io-FA5C5C?style=for-the-badge&logo=itch.io&logoColor=white)](https://satorish.itch.io/gridmapper)
 
 </div>
 
