@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/b0b93380-f1f2-482f-88f6-59d467246d90" width="400" alt="2D Grid Map Editor Logo">
+</p>
+
 # 2D Grid Map Editor
 
 A high-performance, lightweight grid-based level editor built with **C++** and **Raylib**. This tool allows developers to prototype maps using a layered system and export the results into a clean, parseable `.txt` format.
@@ -69,6 +73,12 @@ The `GridExportManager` generates a space-delimited file that is easy to parse i
     g++ main.cpp src/*.cpp -lraylib -o GridEditor
     ```
 4.  Run the executable and set your map dimensions in the initial GUI.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
 ---
 
